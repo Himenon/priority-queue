@@ -1,0 +1,26 @@
+name: Version Up
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  auto-version-up:
+    name: Auto Version Up
+    timeout-minutes: 2
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: ./.github/actions/initialize
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+      - run: pnpm i --frozen-lockfile
+      - name: Auto version update
+        run: |
+          pnpm lerna:version:up
