@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { PriorityQueue } from '../index.js';
+import { describe, it, expect } from "vitest";
+import { PriorityQueue } from "../index.js";
 
 function measureTime<T>(fn: () => T): { durationMs: number; result: T } {
   const start = performance.now();
@@ -8,7 +8,7 @@ function measureTime<T>(fn: () => T): { durationMs: number; result: T } {
   return { durationMs: end - start, result };
 }
 
-describe('FlexiblePriorityQueue Performance', () => {
+describe("FlexiblePriorityQueue Performance", () => {
   const N = 100_000;
 
   it(`enqueue and dequeue ${N} items in under 500ms`, () => {

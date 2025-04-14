@@ -10,9 +10,7 @@ export class PriorityQueue<T> {
   #compare: CompareFn<T>;
 
   constructor(isMinHeap: boolean = true) {
-    this.#compare = isMinHeap
-      ? (a, b) => a.priority - b.priority
-      : (a, b) => b.priority - a.priority;
+    this.#compare = isMinHeap ? (a, b) => a.priority - b.priority : (a, b) => b.priority - a.priority;
   }
 
   public setMinHeap(): void {
@@ -52,7 +50,7 @@ export class PriorityQueue<T> {
   public isEmpty(): boolean {
     return this.#heap.length === 0;
   }
-  
+
   get size(): number {
     return this.#heap.length;
   }

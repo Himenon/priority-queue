@@ -1,6 +1,6 @@
-import { PriorityQueue } from './src/index.js';
-import { performance } from 'perf_hooks';
-import * as fs from 'fs';
+import { PriorityQueue } from "./src/index.js";
+import { performance } from "perf_hooks";
+import * as fs from "fs";
 
 type BenchmarkResult = {
   heapSize: number;
@@ -66,13 +66,11 @@ function runBenchmark(heapSize: number): BenchmarkResult {
   };
 }
 
-function saveCSV(results: BenchmarkResult[], path = 'benchmark.csv') {
-  const header = 'heapSize,enqueueTimeMs,dequeueTimeMs,reheapifyTimeMs,drainTimeMs,memoryMB\n';
+function saveCSV(results: BenchmarkResult[], path = "benchmark.csv") {
+  const header = "heapSize,enqueueTimeMs,dequeueTimeMs,reheapifyTimeMs,drainTimeMs,memoryMB\n";
   const rows = results
-    .map(r =>
-      [r.heapSize, r.enqueueTimeMs, r.dequeueTimeMs, r.reheapifyTimeMs, r.drainTimeMs, r.memoryMB].join(',')
-    )
-    .join('\n');
+    .map((r) => [r.heapSize, r.enqueueTimeMs, r.dequeueTimeMs, r.reheapifyTimeMs, r.drainTimeMs, r.memoryMB].join(","))
+    .join("\n");
 
   fs.writeFileSync(path, header + rows);
   console.log(`CSV saved to ${path}`);
