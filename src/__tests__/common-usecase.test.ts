@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { PriorityQueue } from '../index.js';
 
-describe('FlexiblePriorityQueue', () => {
+describe('Common usecase', () => {
   let pq: PriorityQueue<string>;
 
   beforeEach(() => {
