@@ -1,8 +1,8 @@
 {
   "name": "@himenon/priority-queue",
-  "version": "1.1.11",
-  "description": "ESModule Library Template",
-  "keywords": ["template", "typescript"],
+  "version": "0.0.1",
+  "description": "Priority Queue",
+  "keywords": ["priority-queue", "queue"],
   "homepage": "https://github.com/Himenon/priority-queue#readme",
   "bugs": {
     "url": "https://github.com/Himenon/priority-queue/issues"
