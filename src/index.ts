@@ -53,6 +53,24 @@ export class PriorityQueue<T> {
     return this.#heap.length === 0;
   }
   
+  get size(): number {
+    return this.#heap.length;
+  }
+
+  *[Symbol.iterator](): IterableIterator<T> {
+    for (const entry of this.#heap) {
+      yield entry.value;
+    }
+  }
+
+  *drain(): Generator<T, void, unknown> {
+    while (!this.isEmpty()) {
+      const value = this.dequeue();
+      if (value !== undefined) {
+        yield value;
+      }
+    }
+  }
 
   #bubbleUp(): void {
     let index = this.#heap.length - 1;
