@@ -1,4 +1,4 @@
-# @himenon/template-esm-js
+# @himenon/priority-queue
 
 ## Release
 
@@ -6,4 +6,4 @@
 
 ## LICENCE
 
-[@Himenon/template-esm-js](https://github.com/Himenon/template-esm-js)・MIT
+[@Himenon/priority-queue](https://github.com/Himenon/priority-queue)・MIT

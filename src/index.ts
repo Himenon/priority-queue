@@ -1,14 +1,148 @@
-export * as Hello from "./hello/world.js";
-export * as Sub from "./sub.js";
-
-export const hello = (name: string): string => {
-  const params = {
-    hoge: 1,
-    fuga: 2,
-  };
-  return `Hello ${name} ${JSON.stringify(params)}`;
+type QueueElement<T> = {
+  value: T;
+  priority: number;
 };
 
-console.log(hello("Your name"));
+type CompareFn<T> = (a: QueueElement<T>, b: QueueElement<T>) => number;
 
-export default hello;
+export class PriorityQueue<T> {
+  private heap: QueueElement<T>[] = [];
+  private compare: CompareFn<T>;
+
+  constructor(isMinHeap: boolean = true) {
+    this.compare = isMinHeap
+      ? (a, b) => a.priority - b.priority
+      : (a, b) => b.priority - a.priority;
+  }
+
+  setMinHeap(): void {
+    this.compare = (a, b) => a.priority - b.priority;
+    this.reheapify();
+  }
+
+  setMaxHeap(): void {
+    this.compare = (a, b) => b.priority - a.priority;
+    this.reheapify();
+  }
+
+  enqueue(value: T, priority: number): void {
+    const node = { value, priority };
+    this.heap.push(node);
+    this.bubbleUp();
+  }
+
+  dequeue(): T | undefined {
+    if (this.isEmpty()) return undefined;
+
+    const top = this.heap[0];
+    const end = this.heap.pop();
+
+    if (this.heap.length > 0 && end) {
+      this.heap[0] = end;
+      this.bubbleDown();
+    }
+
+    return top.value;
+  }
+
+  peek(): T | undefined {
+    return this.heap[0]?.value;
+  }
+
+  isEmpty(): boolean {
+    return this.heap.length === 0;
+  }
+
+  private bubbleUp(): void {
+    let index = this.heap.length - 1;
+    const element = this.heap[index];
+
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      const parent = this.heap[parentIndex];
+
+      if (this.compare(element, parent) >= 0) break;
+
+      this.heap[index] = parent;
+      this.heap[parentIndex] = element;
+      index = parentIndex;
+    }
+  }
+
+  private bubbleDown(): void {
+    let index = 0;
+    const length = this.heap.length;
+    const element = this.heap[0];
+
+    while (true) {
+      let leftIndex = 2 * index + 1;
+      let rightIndex = 2 * index + 2;
+      let swapIndex: number | null = null;
+
+      if (leftIndex < length) {
+        const left = this.heap[leftIndex];
+        if (this.compare(left, element) < 0) {
+          swapIndex = leftIndex;
+        }
+      }
+
+      if (rightIndex < length) {
+        const right = this.heap[rightIndex];
+        if (
+          (swapIndex === null && this.compare(right, element) < 0) ||
+          (swapIndex !== null && this.compare(right, this.heap[swapIndex]) < 0)
+        ) {
+          swapIndex = rightIndex;
+        }
+      }
+
+      if (swapIndex === null) break;
+
+      this.heap[index] = this.heap[swapIndex];
+      this.heap[swapIndex] = element;
+      index = swapIndex;
+    }
+  }
+
+  private reheapify(): void {
+    // Heapify all nodes (O(n)) - optional performance tradeoff
+    for (let i = Math.floor(this.heap.length / 2); i >= 0; i--) {
+      this.bubbleDownFrom(i);
+    }
+  }
+
+  private bubbleDownFrom(startIndex: number): void {
+    let index = startIndex;
+    const length = this.heap.length;
+    const element = this.heap[index];
+
+    while (true) {
+      let leftIndex = 2 * index + 1;
+      let rightIndex = 2 * index + 2;
+      let swapIndex: number | null = null;
+
+      if (leftIndex < length) {
+        const left = this.heap[leftIndex];
+        if (this.compare(left, element) < 0) {
+          swapIndex = leftIndex;
+        }
+      }
+
+      if (rightIndex < length) {
+        const right = this.heap[rightIndex];
+        if (
+          (swapIndex === null && this.compare(right, element) < 0) ||
+          (swapIndex !== null && this.compare(right, this.heap[swapIndex]) < 0)
+        ) {
+          swapIndex = rightIndex;
+        }
+      }
+
+      if (swapIndex === null) break;
+
+      this.heap[index] = this.heap[swapIndex];
+      this.heap[swapIndex] = element;
+      index = swapIndex;
+    }
+  }
+}
