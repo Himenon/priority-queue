@@ -9,7 +9,7 @@ export class PriorityQueue<T> {
   #heap: QueueElement<T>[] = [];
   #compare: CompareFn<T>;
 
-  constructor(isMinHeap: boolean = true) {
+  constructor(isMinHeap = true) {
     this.#compare = isMinHeap ? (a, b) => a.priority - b.priority : (a, b) => b.priority - a.priority;
   }
 
@@ -92,8 +92,8 @@ export class PriorityQueue<T> {
     const element = this.#heap[0];
 
     while (true) {
-      let leftIndex = 2 * index + 1;
-      let rightIndex = 2 * index + 2;
+      const leftIndex = 2 * index + 1;
+      const rightIndex = 2 * index + 2;
       let swapIndex: number | null = null;
 
       if (leftIndex < length) {
@@ -134,8 +134,8 @@ export class PriorityQueue<T> {
     const element = this.#heap[index];
 
     while (true) {
-      let leftIndex = 2 * index + 1;
-      let rightIndex = 2 * index + 2;
+      const leftIndex = 2 * index + 1;
+      const rightIndex = 2 * index + 2;
       let swapIndex: number | null = null;
 
       if (leftIndex < length) {

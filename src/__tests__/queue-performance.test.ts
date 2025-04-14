@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { PriorityQueue } from "../index.js";
 
 function measureTime<T>(fn: () => T): { durationMs: number; result: T } {

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { PriorityQueue } from "../index.js";
 
 function delay(ms: number): Promise<void> {
@@ -39,8 +39,12 @@ describe("FlexiblePriorityQueue with async functions", () => {
   });
 
   it("should work with drain and async/await", async () => {
-    pq.enqueue(async () => result.push("1"), 1);
-    pq.enqueue(async () => result.push("0"), 0);
+    pq.enqueue(async () => {
+      result.push("1");
+    }, 1);
+    pq.enqueue(async () => {
+      result.push("0");
+    }, 0);
 
     for (const fn of pq.drain()) {
       await fn();
@@ -52,9 +56,15 @@ describe("FlexiblePriorityQueue with async functions", () => {
   it("should support switching to max-heap for async tasks", async () => {
     pq.setMaxHeap();
 
-    pq.enqueue(async () => result.push("low"), 1);
-    pq.enqueue(async () => result.push("mid"), 2);
-    pq.enqueue(async () => result.push("high"), 3);
+    pq.enqueue(async () => {
+      result.push("low");
+    }, 1);
+    pq.enqueue(async () => {
+      result.push("mid");
+    }, 2);
+    pq.enqueue(async () => {
+      result.push("high");
+    }, 3);
 
     for (const fn of pq.drain()) {
       await fn();

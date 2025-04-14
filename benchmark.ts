@@ -1,6 +1,6 @@
+import * as fs from "node:fs";
+import { performance } from "node:perf_hooks";
 import { PriorityQueue } from "./src/index.js";
-import { performance } from "perf_hooks";
-import * as fs from "fs";
 
 type BenchmarkResult = {
   heapSize: number;
