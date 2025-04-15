@@ -1,16 +1,16 @@
-import { PriorityQueue } from "../src/index.js";
+import { PriorityQueue } from "../src";
 import YoctoQueue from "yocto-queue";
 import { performance } from "perf_hooks";
 import * as fs from "fs";
 
-const sizes = [1000, 5000, 10000, 50000, 100000];
+const sizes = [1000, 5000, 10000, 50000, 100000, 200000, 500000, 1000000];
 
 type Result = {
-  type: "priority" | "yocto";
   heapSize: number;
   enqueueTimeMs: number;
   dequeueTimeMs: number;
   drainTimeMs: number;
+  memoryMB: number;
 };
 
 function measureTime<T>(fn: () => T): { durationMs: number; result: T } {
@@ -20,7 +20,12 @@ function measureTime<T>(fn: () => T): { durationMs: number; result: T } {
   return { durationMs: end - start, result };
 }
 
-function benchmarkFlexiblePriorityQueue(size: number): Result {
+function memoryInMB(): number {
+  const mem = process.memoryUsage().heapUsed;
+  return Math.round((mem / 1024 / 1024) * 100) / 100;
+}
+
+function benchmarkPriorityQueue(size: number): Result {
   const pq = new PriorityQueue<number>(true);
   const data = Array.from({ length: size }, (_, i) => ({
     value: i,
@@ -39,7 +44,6 @@ function benchmarkFlexiblePriorityQueue(size: number): Result {
     }
   });
 
-  // 再度入れ直して drain をテスト
   for (const item of data) {
     pq.enqueue(item.value, item.priority);
   }
@@ -48,12 +52,14 @@ function benchmarkFlexiblePriorityQueue(size: number): Result {
     [...pq.drain()];
   });
 
+  const memoryMB = memoryInMB();
+
   return {
-    type: "priority",
     heapSize: size,
     enqueueTimeMs,
     dequeueTimeMs,
     drainTimeMs,
+    memoryMB,
   };
 }
 
@@ -73,7 +79,6 @@ function benchmarkYoctoQueue(size: number): Result {
     }
   });
 
-  // 再度入れ直して drain をテスト
   for (const item of data) {
     q.enqueue(item);
   }
@@ -82,35 +87,39 @@ function benchmarkYoctoQueue(size: number): Result {
     [...q.drain()];
   });
 
+  const memoryMB = memoryInMB();
+
   return {
-    type: "yocto",
     heapSize: size,
     enqueueTimeMs,
     dequeueTimeMs,
     drainTimeMs,
+    memoryMB,
   };
 }
 
-function saveCSV(results: Result[], path = "benchmark/compare.csv") {
-  const header = "type,heapSize,enqueueTimeMs,dequeueTimeMs,drainTimeMs\n";
-  const rows = results.map((r) => [r.type, r.heapSize, r.enqueueTimeMs, r.dequeueTimeMs, r.drainTimeMs].join(",")).join("\n");
+function saveCSV(results: Result[], path: string) {
+  const header = "heapSize,enqueueTimeMs,dequeueTimeMs,drainTimeMs,memoryMB\n";
+  const rows = results.map((r) => [r.heapSize, r.enqueueTimeMs, r.dequeueTimeMs, r.drainTimeMs, r.memoryMB].join(",")).join("\n");
 
   fs.writeFileSync(path, header + rows);
   console.log(`CSV written to ${path}`);
 }
 
 function main() {
-  const results: Result[] = [];
+  const priorityResults: Result[] = [];
+  const yoctoResults: Result[] = [];
 
   for (const size of sizes) {
-    console.log(`Benchmarking priority queue for size = ${size}`);
-    results.push(benchmarkFlexiblePriorityQueue(size));
+    console.log(`Benchmarking PriorityQueue size=${size}`);
+    priorityResults.push(benchmarkPriorityQueue(size));
 
-    console.log(`Benchmarking yocto queue for size = ${size}`);
-    results.push(benchmarkYoctoQueue(size));
+    console.log(`Benchmarking YoctoQueue size=${size}`);
+    yoctoResults.push(benchmarkYoctoQueue(size));
   }
 
-  saveCSV(results);
+  saveCSV(priorityResults, "benchmark/priority.csv");
+  saveCSV(yoctoResults, "benchmark/yocto.csv");
 }
 
 main();

@@ -6,6 +6,7 @@ pnpm run ts ./benchmark/compare.ts
 
 cd benchmark
 
-gnuplot ./compare.gnuplot
+gnuplot compare-time.gnuplot
+gnuplot compare-memory.gnuplot
 
 cd -

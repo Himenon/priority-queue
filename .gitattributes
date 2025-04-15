@@ -1,1 +1,11 @@
 *       eol=lf
+
+# 画像・バイナリファイルは text 処理しない
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+
+# CSV や gnuplot スクリプトは text 処理可（必要に応じて）
+*.csv text eol=lf
+*.gnuplot text eol=lf
