@@ -1,6 +1,6 @@
 {
   "name": "@himenon/priority-queue",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Priority Queue",
   "keywords": ["priority-queue", "queue"],
   "homepage": "https://github.com/Himenon/priority-queue#readme",
