@@ -80,27 +80,28 @@ export class PriorityQueue<T> {
 
   private bubbleDown(): void {
     const length = this.heap.length;
-    const element = this.heap[0];
     const cmp = this.compare;
+    const element = this.heap[0];
     let idx = 0;
 
     while (true) {
       const leftIdx = 2 * idx + 1;
       const rightIdx = 2 * idx + 2;
-      let smallest = idx;
+      let swapIdx = idx;
 
-      if (leftIdx < length && cmp(this.heap[leftIdx], this.heap[smallest]) < 0) {
-        smallest = leftIdx;
+      if (leftIdx < length && cmp(this.heap[leftIdx], this.heap[swapIdx]) < 0) {
+        swapIdx = leftIdx;
       }
 
-      if (rightIdx < length && cmp(this.heap[rightIdx], this.heap[smallest]) < 0) {
-        smallest = rightIdx;
+      if (rightIdx < length && cmp(this.heap[rightIdx], this.heap[swapIdx]) < 0) {
+        swapIdx = rightIdx;
       }
 
-      if (smallest === idx) break;
+      if (swapIdx === idx) break;
 
-      this.heap[idx] = this.heap[smallest];
-      idx = smallest;
+      // swap without intermediate write
+      this.heap[idx] = this.heap[swapIdx];
+      idx = swapIdx;
     }
 
     this.heap[idx] = element;
