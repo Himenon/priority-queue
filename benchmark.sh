@@ -2,11 +2,9 @@
 
 set -e
 
-pnpm run ts ./benchmark/compare.ts
+pnpm run ts:benchmark ./benchmark/compare.ts
 
-cd benchmark
+docker build -t plot-benchmark ./benchmark
 
-gnuplot compare-time.gnuplot
-gnuplot compare-memory.gnuplot
+docker run --rm -v "$PWD/benchmark":/app plot-benchmark
 
-cd -
