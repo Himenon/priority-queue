@@ -1,20 +1,20 @@
 {
-  "name": "@himenon/template-esm-js",
-  "version": "1.1.11",
-  "description": "ESModule Library Template",
-  "keywords": ["template", "typescript"],
-  "homepage": "https://github.com/Himenon/template-esm-js#readme",
+  "name": "@himenon/priority-queue",
+  "version": "0.0.1",
+  "description": "Priority Queue",
+  "keywords": ["priority-queue", "queue"],
+  "homepage": "https://github.com/Himenon/priority-queue#readme",
   "bugs": {
-    "url": "https://github.com/Himenon/template-esm-js/issues"
+    "url": "https://github.com/Himenon/priority-queue/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Himenon/template-esm-js.git"
+    "url": "git@github.com:Himenon/priority-queue.git"
   },
   "license": "MIT",
   "author": {
     "name": "Himenon",
-    "email": "k.himeno314@gmail.com",
+    "email": "6715229+Himenon@users.noreply.github.com",
     "url": "https://github.com/Himenon"
   },
   "sideEffects": false,
@@ -43,16 +43,18 @@
     "release:npm:registry": "pnpm publish",
     "test": "run-p test:vitest lint",
     "lint": "biome lint .",
-    "format": "biome format --write .",
+    "format": "biome check --fix --unsafe",
     "validate": "biome check --write .",
     "test:vitest": "vitest",
-    "ts": "node --no-warnings=ExperimentalWarning --experimental-specifier-resolution=node --loader ts-node/esm"
+    "benchmark": "./benchmark.sh",
+    "ts:benchmark": "node --expose-gc --no-warnings=ExperimentalWarning --experimental-specifier-resolution=node --loader ts-node/esm",
+    "ts": "node --no-warnings=ExperimentalWarning --experimental-specifier-resolution=node --loader ts-node/esm "
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome format --no-errors-on-unmatched --write"]
+    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome check --fix --unsafe --no-errors-on-unmatched"]
   },
   "packageManager": "pnpm@10.8.0",
   "devDependencies": {
@@ -69,7 +71,8 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
     "typescript": "5.8.3",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.1",
+    "yocto-queue": "^1.2.1"
   },
   "engines": {
     "node": ">=22",
