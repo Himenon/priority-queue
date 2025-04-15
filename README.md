@@ -3,7 +3,7 @@
 TypeScript による柔軟な優先度付きキュー実装。  
 最小ヒープ／最大ヒープを **動的に切り替え可能**で、優先度順に値や関数を安全に処理できます。
 
-## ✨ 特徴
+## Features
 
 - ✅ **最小／最大ヒープ切り替え**（`setMinHeap()` / `setMaxHeap()`）
 - ✅ **優先度に基づく `enqueue` / `dequeue`**
@@ -14,10 +14,6 @@ TypeScript による柔軟な優先度付きキュー実装。
 
 ![Benchmark](./benchmark.png)
 ![Memory](./memory.png)
-
-## Release
-
-- Automatic version updates are performed when merged into the `main` branch.
 
 ## LICENCE
 

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { PriorityQueue } from "../index.js";
 
-describe("FlexiblePriorityQueue: size, iterator, and drain", () => {
+describe("PriorityQueue: size, iterator, and drain", () => {
   let pq: PriorityQueue<string>;
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe("FlexiblePriorityQueue: size, iterator, and drain", () => {
 
     const values = [...pq];
     // ヒープ構造に従うため順序保証なし（要素は存在するが順序はランダム）
-    expect(values.sort()).toEqual(["A", "B", "C"]);
+    expect(values.sort()).toStrictEqual(["A", "B", "C"]);
     expect(values.length).toBe(3);
   });
 

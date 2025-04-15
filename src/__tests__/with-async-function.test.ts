@@ -5,7 +5,7 @@ function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-describe("FlexiblePriorityQueue with async functions", () => {
+describe("PriorityQueue with async functions", () => {
   let pq: PriorityQueue<() => Promise<void>>;
   let result: string[];
 

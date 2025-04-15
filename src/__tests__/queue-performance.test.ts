@@ -8,7 +8,7 @@ function measureTime<T>(fn: () => T): { durationMs: number; result: T } {
   return { durationMs: end - start, result };
 }
 
-describe("FlexiblePriorityQueue Performance", () => {
+describe("PriorityQueue Performance", () => {
   const N = 100_000;
 
   it(`enqueue and dequeue ${N} items in under 500ms`, () => {
