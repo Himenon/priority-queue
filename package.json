@@ -43,7 +43,7 @@
     "release:npm:registry": "pnpm publish",
     "test": "run-p test:vitest lint",
     "lint": "biome lint .",
-    "format": "biome format --write .",
+    "format": "biome check --fix --unsafe",
     "validate": "biome check --write .",
     "test:vitest": "vitest",
     "benchmark": "./benchmark.sh",
@@ -53,7 +53,7 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome format --no-errors-on-unmatched --write"]
+    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome check --fix --unsafe"]
   },
   "packageManager": "pnpm@10.8.0",
   "devDependencies": {

@@ -1,7 +1,7 @@
-import { PriorityQueue } from "../src";
+import * as fs from "node:fs";
+import { performance } from "node:perf_hooks";
 import YoctoQueue from "yocto-queue";
-import { performance } from "perf_hooks";
-import * as fs from "fs";
+import { PriorityQueue } from "../src";
 
 const sizes = [1000, 5000, 10000, 50000, 100000, 200000, 500000, 1000000];
 
