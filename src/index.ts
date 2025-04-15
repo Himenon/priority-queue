@@ -70,96 +70,93 @@ export class PriorityQueue<T> {
     }
   }
 
+  /**
+   * drainFast: 優先度順で全て取り出すが、dequeue() を使わず O(n log n) を一括で行う
+   */
+  public drainFast(): T[] {
+    const sorted = [...this.#heap].sort(this.#compare);
+    this.#heap = [];
+    return sorted.map((item) => item.value);
+  }
+
   #bubbleUp(): void {
     let index = this.#heap.length - 1;
     const element = this.#heap[index];
+    const compare = this.#compare;
 
     while (index > 0) {
       const parentIndex = Math.floor((index - 1) / 2);
       const parent = this.#heap[parentIndex];
 
-      if (this.#compare(element, parent) >= 0) break;
+      if (compare(element, parent) >= 0) break;
 
       this.#heap[index] = parent;
-      this.#heap[parentIndex] = element;
       index = parentIndex;
     }
+
+    this.#heap[index] = element;
   }
 
   #bubbleDown(): void {
-    let index = 0;
     const length = this.#heap.length;
     const element = this.#heap[0];
+    const compare = this.#compare;
+    let index = 0;
 
     while (true) {
       const leftIndex = 2 * index + 1;
       const rightIndex = 2 * index + 2;
-      let swapIndex: number | null = null;
+      let smallest = index;
 
-      if (leftIndex < length) {
-        const left = this.#heap[leftIndex];
-        if (this.#compare(left, element) < 0) {
-          swapIndex = leftIndex;
-        }
+      if (leftIndex < length && compare(this.#heap[leftIndex], this.#heap[smallest]) < 0) {
+        smallest = leftIndex;
       }
 
-      if (rightIndex < length) {
-        const right = this.#heap[rightIndex];
-        if (
-          (swapIndex === null && this.#compare(right, element) < 0) ||
-          (swapIndex !== null && this.#compare(right, this.#heap[swapIndex]) < 0)
-        ) {
-          swapIndex = rightIndex;
-        }
+      if (rightIndex < length && compare(this.#heap[rightIndex], this.#heap[smallest]) < 0) {
+        smallest = rightIndex;
       }
 
-      if (swapIndex === null) break;
+      if (smallest === index) break;
 
-      this.#heap[index] = this.#heap[swapIndex];
-      this.#heap[swapIndex] = element;
-      index = swapIndex;
+      this.#heap[index] = this.#heap[smallest];
+      index = smallest;
     }
+
+    this.#heap[index] = element;
   }
 
   #reheapify(): void {
-    // Heapify all nodes (O(n)) - optional performance tradeoff
-    for (let i = Math.floor(this.#heap.length / 2); i >= 0; i--) {
+    for (let i = Math.floor(this.#heap.length / 2) - 1; i >= 0; i--) {
       this.#bubbleDownFrom(i);
     }
   }
 
   #bubbleDownFrom(startIndex: number): void {
-    let index = startIndex;
+    if (!this.#heap[startIndex]) return;
     const length = this.#heap.length;
-    const element = this.#heap[index];
+    const element = this.#heap[startIndex];
+    const compare = this.#compare;
+    let index = startIndex;
 
     while (true) {
       const leftIndex = 2 * index + 1;
       const rightIndex = 2 * index + 2;
-      let swapIndex: number | null = null;
+      let smallest = index;
 
-      if (leftIndex < length) {
-        const left = this.#heap[leftIndex];
-        if (this.#compare(left, element) < 0) {
-          swapIndex = leftIndex;
-        }
+      if (leftIndex < length && compare(this.#heap[leftIndex], this.#heap[smallest]) < 0) {
+        smallest = leftIndex;
       }
 
-      if (rightIndex < length) {
-        const right = this.#heap[rightIndex];
-        if (
-          (swapIndex === null && this.#compare(right, element) < 0) ||
-          (swapIndex !== null && this.#compare(right, this.#heap[swapIndex]) < 0)
-        ) {
-          swapIndex = rightIndex;
-        }
+      if (rightIndex < length && compare(this.#heap[rightIndex], this.#heap[smallest]) < 0) {
+        smallest = rightIndex;
       }
 
-      if (swapIndex === null) break;
+      if (smallest === index) break;
 
-      this.#heap[index] = this.#heap[swapIndex];
-      this.#heap[swapIndex] = element;
-      index = swapIndex;
+      this.#heap[index] = this.#heap[smallest];
+      index = smallest;
     }
+
+    this.#heap[index] = element;
   }
 }
