@@ -12,8 +12,7 @@ TypeScript による柔軟な優先度付きキュー実装。
 
 ## Benchmark
 
-![Benchmark](./benchmark.png)
-![Memory](./memory.png)
+![Compare](./benchmark/compare.png)
 
 ## LICENCE
 

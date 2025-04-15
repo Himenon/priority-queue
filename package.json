@@ -46,8 +46,7 @@
     "format": "biome format --write .",
     "validate": "biome check --write .",
     "test:vitest": "vitest",
-    "benchmark": "pnpm run ts ./benchmark.ts",
-    "benchmark:plot": "gnuplot memory.gnuplot && gnuplot benchmark.gnuplot",
+    "benchmark": "./benchmark.sh",
     "ts": "node --no-warnings=ExperimentalWarning --experimental-specifier-resolution=node --loader ts-node/esm"
   },
   "simple-git-hooks": {
@@ -71,7 +70,8 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
     "typescript": "5.8.3",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.1",
+    "yocto-queue": "^1.2.1"
   },
   "engines": {
     "node": ">=22",
