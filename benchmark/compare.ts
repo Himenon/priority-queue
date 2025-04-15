@@ -3,7 +3,9 @@ import { performance } from "node:perf_hooks";
 import YoctoQueue from "yocto-queue";
 import { PriorityQueue } from "../src";
 
-const sizes = [1000, 5000, 10000, 50000, 100000, 200000, 500000, 1000000];
+const sizes = [
+  25, 50, 75, 100, 250, 500, 750, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 75_000, 100_000, 250_000, 500_000, 750_000, 1_000_000,
+];
 
 type Result = {
   heapSize: number;

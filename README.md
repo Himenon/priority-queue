@@ -18,6 +18,28 @@ TypeScript による柔軟な優先度付きキュー実装。
 | :-----------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 | ![Compare Time: yocto-queue vs @himenon/priority-queue](./benchmark/compare-time.png) | ![Compare Memory: yocto-queue vs @himenon/priority-queue](./benchmark/compare-memory.png) |
 
+
+## ⏱️ Performance Considerations: `PriorityQueue` vs `yocto-queue`
+
+This implementation of `PriorityQueue` adopts a binary heap internally in order to support prioritized ordering. While this introduces higher time complexity compared to plain FIFO queues like [`yocto-queue`](https://github.com/sindresorhus/yocto-queue), it is a conscious trade-off that ensures ordering guarantees while maintaining low memory footprint.
+
+### 📊 Comparison Table
+
+| Operation    | `yocto-queue`       | `PriorityQueue` (this) | Complexity Increase | Reason |
+|--------------|---------------------|-------------------------|----------------------|--------|
+| `enqueue`    | `O(1)`              | `O(log n)`              | Yes 🔺               | Maintains heap order via `bubbleUp` |
+| `dequeue`    | `O(1)`              | `O(log n)`              | Yes 🔺               | Requires heap reordering via `bubbleDown` |
+| `peek`       | `O(1)`              | `O(1)`                  | No ✅                | Both read front/root value |
+| `drain`      | `O(n)`              | `O(n log n)`            | Yes 🔺               | Sequential `dequeue()` or heap sort |
+| Memory usage | Low (linked list)   | **Lower** (flat array)  | No ✅                | Binary heap stored as flat array (compact) |
+
+### 🧠 Why the Priority Queue is Slower
+
+Unlike `yocto-queue`, which is designed solely for FIFO operations and does not preserve any ordering beyond insertion time, `PriorityQueue` must always ensure that the highest or lowest priority item can be dequeued efficiently. This requires maintaining a partially ordered tree (heap), where insertion and removal involve comparisons and restructuring.
+
+Thus, the increase in time complexity from `O(1)` to `O(log n)` is **the necessary cost of enabling**
+
+
 ## LICENCE
 
 [@Himenon/priority-queue](https://github.com/Himenon/priority-queue)・MIT
