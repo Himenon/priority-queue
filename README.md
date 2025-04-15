@@ -22,7 +22,7 @@ pnpm i @himenon/priority-queue
 ## 🔧 Usage
 
 ```ts
-import { PriorityQueue } from '@himenon/priority^queue';
+import { PriorityQueue } from "@himenon/priority-queue";
 
 const pq = new PriorityQueue<string>(); // Default: min-heap
 
@@ -82,20 +82,19 @@ This implementation of `PriorityQueue` adopts a binary heap internally in order 
 
 ### 📊 Comparison Table
 
-| Operation    | `yocto-queue`       | `PriorityQueue` (this) | Complexity Increase | Reason |
-|--------------|---------------------|-------------------------|----------------------|--------|
-| `enqueue`    | `O(1)`              | `O(log n)`              | Yes 🔺               | Maintains heap order via `bubbleUp` |
-| `dequeue`    | `O(1)`              | `O(log n)`              | Yes 🔺               | Requires heap reordering via `bubbleDown` |
-| `peek`       | `O(1)`              | `O(1)`                  | No ✅                | Both read front/root value |
-| `drain`      | `O(n)`              | `O(n log n)`            | Yes 🔺               | Sequential `dequeue()` or heap sort |
-| Memory usage | Low (linked list)   | **Lower** (flat array)  | No ✅                | Binary heap stored as flat array (compact) |
+| Operation    | `yocto-queue`     | `PriorityQueue` (this) | Complexity Increase | Reason                                     |
+| ------------ | ----------------- | ---------------------- | ------------------- | ------------------------------------------ |
+| `enqueue`    | `O(1)`            | `O(log n)`             | Yes 🔺              | Maintains heap order via `bubbleUp`        |
+| `dequeue`    | `O(1)`            | `O(log n)`             | Yes 🔺              | Requires heap reordering via `bubbleDown`  |
+| `peek`       | `O(1)`            | `O(1)`                 | No ✅               | Both read front/root value                 |
+| `drain`      | `O(n)`            | `O(n log n)`           | Yes 🔺              | Sequential `dequeue()` or heap sort        |
+| Memory usage | Low (linked list) | **Lower** (flat array) | No ✅               | Binary heap stored as flat array (compact) |
 
 ### 🧠 Why the Priority Queue is Slower
 
 Unlike `yocto-queue`, which is designed solely for FIFO operations and does not preserve any ordering beyond insertion time, `PriorityQueue` must always ensure that the highest or lowest priority item can be dequeued efficiently. This requires maintaining a partially ordered tree (heap), where insertion and removal involve comparisons and restructuring.
 
 Thus, the increase in time complexity from `O(1)` to `O(log n)` is **the necessary cost of enabling**
-
 
 ## LICENCE
 
