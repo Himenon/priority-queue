@@ -53,7 +53,7 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome check --fix --unsafe"]
+    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome check --fix --unsafe --no-errors-on-unmatched"]
   },
   "packageManager": "pnpm@10.8.0",
   "devDependencies": {
