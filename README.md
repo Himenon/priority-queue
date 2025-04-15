@@ -12,7 +12,11 @@ TypeScript による柔軟な優先度付きキュー実装。
 
 ## Benchmark
 
-![Compare](./benchmark/compare.png)
+@himenon/priority-queue (This library) vs [yocto-queue](https://github.com/sindresorhus/yocto-queue)
+
+|                                          Memory                                           |                                         Time                                          |
+| :---------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: |
+| ![Compare Memory: yocto-queue vs @himenon/priority-queue](./benchmark/compare-memory.png) | ![Compare Time: yocto-queue vs @himenon/priority-queue](./benchmark/compare-time.png) |
 
 ## LICENCE
 

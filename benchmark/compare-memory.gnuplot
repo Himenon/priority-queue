@@ -1,11 +1,11 @@
-set datafile separator ","
-set terminal pngcairo size 1000,600 enhanced font 'Arial,10'
 set output 'compare-memory.png'
-
-set title "Memory Usage Comparison"
+set title "Queue Memory Usage Comparison"
 set xlabel "Heap Size"
-set ylabel "Memory (MB)"
-set key outside
+set ylabel "Memory Usage (MB)"
+
+set datafile separator ","
+set terminal pngcairo size 800,600 enhanced font 'Arial,10'
+set key outside top right
 set grid
 
 plot \

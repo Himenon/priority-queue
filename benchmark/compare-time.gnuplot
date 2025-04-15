@@ -1,11 +1,11 @@
-set datafile separator ","
-set terminal pngcairo size 1200,600 enhanced font 'Arial,10'
 set output 'compare-time.png'
-
 set title "Queue Time Comparison"
 set xlabel "Heap Size"
 set ylabel "Time (ms)"
-set key outside
+
+set datafile separator ","
+set terminal pngcairo size 800,600 enhanced font 'Arial,10'
+set key outside top right
 set grid
 
 plot \
