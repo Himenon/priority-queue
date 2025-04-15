@@ -1,8 +1,11 @@
 {
   "name": "@himenon/priority-queue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Priority Queue",
-  "keywords": ["priority-queue", "queue"],
+  "keywords": [
+    "priority-queue",
+    "queue"
+  ],
   "homepage": "https://github.com/Himenon/priority-queue#readme",
   "bugs": {
     "url": "https://github.com/Himenon/priority-queue/issues"
@@ -34,7 +37,11 @@
   "directories": {
     "dist": "dist"
   },
-  "files": ["dist", "package.json", "README.md"],
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup src/*.ts",
     "clean": "rimraf dist",
@@ -54,7 +61,9 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": ["biome check --fix --unsafe --no-errors-on-unmatched"]
+    "*.{js,jsx,json,yml,yaml,html,md,ts,tsx}": [
+      "biome check --fix --unsafe --no-errors-on-unmatched"
+    ]
   },
   "packageManager": "pnpm@10.8.0",
   "devDependencies": {
