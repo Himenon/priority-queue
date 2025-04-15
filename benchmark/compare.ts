@@ -8,7 +8,7 @@ declare let global: {
 };
 
 const sizes = [1000, 5000, 10000, 25000, 50000, 100000];
-const trials = 10;
+const trials = 100;
 
 type Measurement = number;
 type ResultSet = Measurement[];
