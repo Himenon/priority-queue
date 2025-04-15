@@ -1,162 +1,142 @@
-type QueueElement<T> = {
-  value: T;
-  priority: number;
-};
-
-type CompareFn<T> = (a: QueueElement<T>, b: QueueElement<T>) => number;
+type Entry<T> = { value: T; priority: number };
+type CompareFn<T> = (a: Entry<T>, b: Entry<T>) => number;
 
 export class PriorityQueue<T> {
-  #heap: QueueElement<T>[] = [];
-  #compare: CompareFn<T>;
+  private heap: Entry<T>[] = [];
+  private compare: CompareFn<T>;
 
   constructor(isMinHeap = true) {
-    this.#compare = isMinHeap ? (a, b) => a.priority - b.priority : (a, b) => b.priority - a.priority;
+    this.compare = isMinHeap ? (a, b) => a.priority - b.priority : (a, b) => b.priority - a.priority;
   }
 
-  public setMinHeap(): void {
-    this.#compare = (a, b) => a.priority - b.priority;
-    this.#reheapify();
+  setMinHeap(): void {
+    this.compare = (a, b) => a.priority - b.priority;
+    this.reheapify();
   }
 
-  public setMaxHeap(): void {
-    this.#compare = (a, b) => b.priority - a.priority;
-    this.#reheapify();
+  setMaxHeap(): void {
+    this.compare = (a, b) => b.priority - a.priority;
+    this.reheapify();
   }
 
-  public enqueue(value: T, priority: number): void {
+  enqueue(value: T, priority: number): void {
     const node = { value, priority };
-    this.#heap.push(node);
-    this.#bubbleUp();
+    this.heap.push(node);
+    this.bubbleUp();
   }
 
-  public dequeue(): T | undefined {
-    if (this.isEmpty()) return undefined;
+  dequeue(): T | undefined {
+    if (this.heap.length === 0) return undefined;
 
-    const top = this.#heap[0];
-    const end = this.#heap.pop();
-
-    if (this.#heap.length > 0 && end) {
-      this.#heap[0] = end;
-      this.#bubbleDown();
+    const top = this.heap[0];
+    const end = this.heap.pop();
+    if (this.heap.length > 0 && end) {
+      this.heap[0] = end;
+      this.bubbleDown();
     }
 
     return top.value;
   }
 
-  public peek(): T | undefined {
-    return this.#heap[0]?.value;
+  drain(): T[] {
+    const sorted = this.heap.slice().sort(this.compare);
+    this.heap.length = 0;
+    return sorted.map((e) => e.value);
   }
 
-  public isEmpty(): boolean {
-    return this.#heap.length === 0;
-  }
-
-  get size(): number {
-    return this.#heap.length;
+  peek(): T | undefined {
+    return this.heap[0]?.value;
   }
 
   *[Symbol.iterator](): IterableIterator<T> {
-    for (const entry of this.#heap) {
+    for (const entry of this.heap) {
       yield entry.value;
     }
   }
 
-  *drain(): Generator<T, void, unknown> {
-    while (!this.isEmpty()) {
-      const value = this.dequeue();
-      if (value !== undefined) {
-        yield value;
-      }
-    }
+  get size(): number {
+    return this.heap.length;
   }
 
-  /**
-   * drainFast: 優先度順で全て取り出すが、dequeue() を使わず O(n log n) を一括で行う
-   */
-  public drainFast(): T[] {
-    const sorted = [...this.#heap].sort(this.#compare);
-    this.#heap = [];
-    return sorted.map((item) => item.value);
+  isEmpty(): boolean {
+    return this.heap.length === 0;
   }
 
-  #bubbleUp(): void {
-    let index = this.#heap.length - 1;
-    const element = this.#heap[index];
-    const compare = this.#compare;
+  private bubbleUp(): void {
+    let idx = this.heap.length - 1;
+    const element = this.heap[idx];
+    const cmp = this.compare;
 
-    while (index > 0) {
-      const parentIndex = Math.floor((index - 1) / 2);
-      const parent = this.#heap[parentIndex];
-
-      if (compare(element, parent) >= 0) break;
-
-      this.#heap[index] = parent;
-      index = parentIndex;
+    while (idx > 0) {
+      const parentIdx = Math.floor((idx - 1) / 2);
+      const parent = this.heap[parentIdx];
+      if (cmp(element, parent) >= 0) break;
+      this.heap[idx] = parent;
+      idx = parentIdx;
     }
 
-    this.#heap[index] = element;
+    this.heap[idx] = element;
   }
 
-  #bubbleDown(): void {
-    const length = this.#heap.length;
-    const element = this.#heap[0];
-    const compare = this.#compare;
-    let index = 0;
+  private bubbleDown(): void {
+    const length = this.heap.length;
+    const element = this.heap[0];
+    const cmp = this.compare;
+    let idx = 0;
 
     while (true) {
-      const leftIndex = 2 * index + 1;
-      const rightIndex = 2 * index + 2;
-      let smallest = index;
+      const leftIdx = 2 * idx + 1;
+      const rightIdx = 2 * idx + 2;
+      let smallest = idx;
 
-      if (leftIndex < length && compare(this.#heap[leftIndex], this.#heap[smallest]) < 0) {
-        smallest = leftIndex;
+      if (leftIdx < length && cmp(this.heap[leftIdx], this.heap[smallest]) < 0) {
+        smallest = leftIdx;
       }
 
-      if (rightIndex < length && compare(this.#heap[rightIndex], this.#heap[smallest]) < 0) {
-        smallest = rightIndex;
+      if (rightIdx < length && cmp(this.heap[rightIdx], this.heap[smallest]) < 0) {
+        smallest = rightIdx;
       }
 
-      if (smallest === index) break;
+      if (smallest === idx) break;
 
-      this.#heap[index] = this.#heap[smallest];
-      index = smallest;
+      this.heap[idx] = this.heap[smallest];
+      idx = smallest;
     }
 
-    this.#heap[index] = element;
+    this.heap[idx] = element;
   }
 
-  #reheapify(): void {
-    for (let i = Math.floor(this.#heap.length / 2) - 1; i >= 0; i--) {
-      this.#bubbleDownFrom(i);
+  private reheapify(): void {
+    for (let i = Math.floor(this.heap.length / 2) - 1; i >= 0; i--) {
+      this.bubbleDownFrom(i);
     }
   }
 
-  #bubbleDownFrom(startIndex: number): void {
-    if (!this.#heap[startIndex]) return;
-    const length = this.#heap.length;
-    const element = this.#heap[startIndex];
-    const compare = this.#compare;
-    let index = startIndex;
+  private bubbleDownFrom(startIndex: number): void {
+    const length = this.heap.length;
+    const element = this.heap[startIndex];
+    const cmp = this.compare;
+    let idx = startIndex;
 
     while (true) {
-      const leftIndex = 2 * index + 1;
-      const rightIndex = 2 * index + 2;
-      let smallest = index;
+      const leftIdx = 2 * idx + 1;
+      const rightIdx = 2 * idx + 2;
+      let smallest = idx;
 
-      if (leftIndex < length && compare(this.#heap[leftIndex], this.#heap[smallest]) < 0) {
-        smallest = leftIndex;
+      if (leftIdx < length && cmp(this.heap[leftIdx], this.heap[smallest]) < 0) {
+        smallest = leftIdx;
       }
 
-      if (rightIndex < length && compare(this.#heap[rightIndex], this.#heap[smallest]) < 0) {
-        smallest = rightIndex;
+      if (rightIdx < length && cmp(this.heap[rightIdx], this.heap[smallest]) < 0) {
+        smallest = rightIdx;
       }
 
-      if (smallest === index) break;
+      if (smallest === idx) break;
 
-      this.#heap[index] = this.#heap[smallest];
-      index = smallest;
+      this.heap[idx] = this.heap[smallest];
+      idx = smallest;
     }
 
-    this.#heap[index] = element;
+    this.heap[idx] = element;
   }
 }
