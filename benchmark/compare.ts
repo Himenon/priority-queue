@@ -31,8 +31,11 @@ type AggregatedResult = {
 };
 
 function memoryInMB(): number {
-  if (global.gc) global.gc();
-  return Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100;
+  for (let i = 0; i < 3; i++) {
+    if (global.gc) global.gc();
+  }
+  const mem = process.memoryUsage().heapUsed;
+  return Math.round((mem / 1024 / 1024) * 100) / 100;
 }
 
 function measureTime<T>(fn: () => T): { time: number; result: T } {

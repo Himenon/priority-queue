@@ -8,7 +8,7 @@ df = pd.read_csv("stats.csv")
 operations = ["enqueue", "dequeue", "drain", "memory"]
 
 for op in operations:
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(8, 6))
     for queue_type in ["priority", "yocto"]:
         sub = df[(df["operation"] == op) & (df["queueType"] == queue_type)]
         if sub.empty:

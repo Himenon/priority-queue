@@ -10,14 +10,43 @@ TypeScript による柔軟な優先度付きキュー実装。
 - ✅ **イテレータ・サイズ取得・全要素抽出 (`drain`) 対応**
 - ✅ **ジェネリクス対応（任意の型の要素を扱える）**
 
-## Benchmark
+## 📈 Benchmark Results
 
-@himenon/priority-queue (This library) vs [yocto-queue](https://github.com/sindresorhus/yocto-queue)
+The following charts compare this `PriorityQueue` implementation with [`yocto-queue`](https://github.com/sindresorhus/yocto-queue), using statistical aggregates over 10 trials. Error bars represent the 25th to 75th percentile range.
 
-|                                         Time                                          |                                          Memory                                           |
-| :-----------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
-| ![Compare Time: yocto-queue vs @himenon/priority-queue](./benchmark/compare-time.png) | ![Compare Memory: yocto-queue vs @himenon/priority-queue](./benchmark/compare-memory.png) |
+---
 
+<div align="center">
+
+<table>
+  <tr>
+    <td><strong>Enqueue Time</strong></td>
+    <td><strong>Dequeue Time</strong></td>
+  </tr>
+  <tr>
+    <td><img src="benchmark/compare-enqueue.png" width="100%"></td>
+    <td><img src="benchmark/compare-dequeue.png" width="100%"></td>
+  </tr>
+  <tr>
+    <td><strong>Drain Time</strong></td>
+    <td><strong>Memory Usage</strong></td>
+  </tr>
+  <tr>
+    <td><img src="benchmark/compare-drain.png" width="100%"></td>
+    <td><img src="benchmark/compare-memory.png" width="100%"></td>
+  </tr>
+</table>
+
+</div>
+
+---
+
+### 📌 Notes
+
+- Benchmarks were executed **10 times per heap size**.
+- All plots include **mean values** with **p25–p75 error bars**.
+- Visualizations were generated via `matplotlib` in Docker.
+- Raw CSV data and scripts can be found under [`benchmark/`](./benchmark/).
 
 ## ⏱️ Performance Considerations: `PriorityQueue` vs `yocto-queue`
 
