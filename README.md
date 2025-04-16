@@ -24,18 +24,30 @@ pnpm i @himenon/priority-queue
 ```ts
 import { PriorityQueue } from "@himenon/priority-queue";
 
-const pq = new PriorityQueue<string>(); // Default: min-heap
+const minQueue = new PriorityQueue<string>();
+minQueue.enqueue("Wash dishes", 3);
+minQueue.enqueue("Do laundry", 2);
+minQueue.enqueue("Buy groceries", 1);
 
-pq.enqueue("task: low", 5);
-pq.enqueue("task: high", 1);
+console.log("Min Queue Peek:", minQueue.peek()); // Output: Buy groceries
+console.log("Min Queue Size:", minQueue.size); // Output: 3
 
-console.log(pq.dequeue()); // => "task: high"
+console.log("Iterating (Min Queue):");
+for (const task of minQueue) { // Uses the priority order iterator
+  console.log(` - ${task}`); // Output: - Buy groceries, - Do laundry, - Wash dishes
+}
+console.log("Size after iteration:", minQueue.size); // Output: 3 (unchanged)
 
-pq.setMaxHeap(); // switch dynamically
-pq.enqueue("urgent", 10);
-pq.enqueue("background", 1);
 
-console.log([...pq]); // iterable
+const maxQueue = new PriorityQueue<number>(false); // Max heap
+maxQueue.enqueue(10, 10);
+maxQueue.enqueue(50, 50);
+maxQueue.enqueue(20, 20);
+
+console.log("\nMax Queue Drain Fast:");
+const drainedMax = maxQueue.drainFast();
+console.log(drainedMax); // Output: [ 50, 20, 10 ]
+console.log("Max Queue Empty:", maxQueue.isEmpty()); // Output: true
 ```
 
 ## 📈 Benchmark Results
